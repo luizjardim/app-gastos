@@ -59,6 +59,10 @@ class Receita extends Transacao{
         return `${this.dataTransacao} / ${this.descricaoTransacao}: R$: ${this.valorTransacao.toFixed(2)} / Fonte: ${this.fonte}`
     }
 
+    get fonteReceita():string{
+        return this.fonte;
+    }
+
 
 }
 class Investimento extends Transacao{
