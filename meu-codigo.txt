@@ -1,0 +1,273 @@
+=== src/models/Transacao.ts ===
+class Transacao {
+    private descricao: string;
+    private valor: number;
+    private data: string;
+
+    constructor(descricao:string, valor:number, data:string){
+        this.descricao = descricao;
+        this.valor = valor;
+        this.data = data;
+    }
+
+    get descricaoTransacao(){
+        return this.descricao;
+    }
+    get valorTransacao(){
+        return this.valor;
+    }
+    get dataTransacao(){
+        return this.data;
+    }
+
+    exibir():string{
+        return `${this.data} / ${this.descricao}: R$: ${this.valor.toFixed(2)}`
+    }
+
+
+}
+
+class Despesa extends Transacao{
+    private categoria: string;
+
+    constructor(descricao:string, valor:number, data:string, categoria:string){
+        if (valor > 0 ){
+            valor = valor * -1
+        }
+        super(descricao, valor, data);
+        this.categoria = categoria; 
+    }
+    exibir():string{
+        return `${this.dataTransacao} / ${this.descricaoTransacao}: R$: ${this.valorTransacao.toFixed(2)} / Na categoria: ${this.categoria}`
+    }
+    get categoriaDespesa(){
+        return this.categoria;
+    }
+
+
+}
+
+class Receita extends Transacao{
+    private fonte: string;
+    constructor(descricao:string, valor:number, data:string, fonte:string){
+        if (valor < 0){
+            valor = valor *-1
+        }
+        super(descricao, valor, data);
+        this.fonte = fonte;
+    }
+    exibir():string{
+        return `${this.dataTransacao} / ${this.descricaoTransacao}: R$: ${this.valorTransacao.toFixed(2)} / Fonte: ${this.fonte}`
+    }
+
+    get fonteReceita():string{
+        return this.fonte;
+    }
+
+
+}
+class Investimento extends Transacao{
+    private tipo:string;
+    private rentabilidade: number;
+
+    constructor(descricao:string, valor:number, data:string, tipo:string, rentabilidade: number){
+        if(valor < 0){
+            valor = valor*-1;
+        }
+        if (rentabilidade < 0){
+            rentabilidade = rentabilidade *-1;
+        }
+        super(descricao, valor, data);
+        this.tipo = tipo;
+        this.rentabilidade = rentabilidade
+        
+    }
+    exibir():string{
+        return `${this.dataTransacao} / ${this.descricaoTransacao} > R$: ${this.valorTransacao.toFixed(2)} / Tipo investimento: ${this.tipo}`
+    }
+    calcularRetorno():string{
+        const retorno = this.valorTransacao * (this.rentabilidade/100)
+        return `Retorno estimado com o R$: ${this.valorTransacao.toFixed(2)} investido é de: ${retorno.toFixed(2)} / Tipo Investimento: ${this.tipo}`
+    }
+}
+/*
+console.log('=== TESTES ===\n');
+
+// Teste 1: Despesa com valor positivo (deve converter para negativo)
+const despesa1 = new Despesa("Uber", 35.80, "2025-10-24", "Transporte");
+console.log(despesa1.exibir());
+console.log(`Valor armazenado: ${despesa1.valorTransacao}\n`);
+
+// Teste 2: Receita com valor negativo (deve converter para positivo)
+const receita1 = new Receita("Salário", -4500, "2025-10-01", "Trabalho CLT");
+console.log(receita1.exibir());
+console.log(`Valor armazenado: ${receita1.valorTransacao}\n`);
+
+// Teste 3: Despesa com valor já negativo (deve manter)
+const despesa2 = new Despesa("Netflix", -49.90, "2025-10-10", "Entretenimento");
+console.log(despesa2.exibir());
+
+// Teste 4: Receita com valor já positivo (deve manter)
+const receita2 = new Receita("Freelance", 800, "2025-10-15", "Projeto Web");
+console.log(receita2.exibir());
+
+// Teste 5: Transacao base (sem herança)
+const transacao = new Transacao("Transferência", 100, "2025-10-20");
+console.log('\n' + transacao.exibir());
+
+
+// Teste 5: Transacao base (sem herança)
+const investimento = new Investimento("Investimento", -100, "2025-10-20=5", 'IPCA', -10);
+console.log('\n' + investimento.exibir());
+console.log('\n' + investimento.calcularRetorno())
+*/
+export { Transacao, Despesa, Receita, Investimento };
+
+
+
+
+-e 
+
+
+=== src/index.ts ===
+import { DespesaService } from './services/DespesaService.js';
+import { ReceitaService } from './services/ReceitaService.js';
+
+console.log('=== TESTANDO SERVICES ===\n');
+
+// Testa DespesaService
+const despesaService = new DespesaService();
+
+const d1 = despesaService.criar('Almoço', 45.50, '2025-10-26', 'Alimentação');
+const d2 = despesaService.criar('Uber', 25, '2025-10-26', 'Transporte');
+const d3 = despesaService.criar('Cinema', 40, '2025-10-26', 'Lazer');
+
+console.log('Todas as despesas:');
+console.log(despesaService.listarDespesas().map(d => d.exibir()));
+
+
+console.log('\nDespesas de Alimentação:');
+console.log(despesaService.buscarPorCategoria('Alimentação').map(d => d.exibir()));
+
+
+console.log(`\nTotal de despesas: R$ ${despesaService.calcularTotal().toFixed(2)}`);
+
+// Teste de deleção
+console.log('\n\nDeletando "Uber"...');
+const deletou = despesaService.deletar('Uber');
+console.log(`Deletou: ${deletou}`);
+console.log('Despesas restantes:', despesaService.listarDespesas().length);
+
+
+
+// Testa ReceitaService
+const receitaService = new ReceitaService();
+
+const r1 = receitaService.criar('Salário', 5000, '2025-10-01', 'Trabalho');
+const r2 = receitaService.criar('Freelance', 800, '2025-10-15', 'Extra');
+
+
+
+console.log('\n\nTodas as receitas:');
+console.log(receitaService.listarReceitas().map(r => r.exibir()));
+
+
+console.log('\nReceitas da fonte:');
+console.log(receitaService.buscarPorFonte('Trabalho').map(d => d.exibir()));
+
+console.log(`\nTotal de receitas: R$ ${receitaService.calcularTotal().toFixed(2)}`);
+// Teste de deleção
+console.log('\n\nDeletando "Salário"...');
+const deletouReceita = receitaService.deletar('Salário');
+console.log(`Deletou: ${deletouReceita}`);
+console.log('Despesas restantes:', receitaService.listarReceitas().length);-e 
+
+
+=== src/controllers/DespesaControllers.ts ===
+-e 
+
+
+=== src/controllers/ReceitaController.ts ===
+-e 
+
+
+=== src/services/ReceitaService.ts ===
+import { Receita } from "../models/Transacao";
+export class ReceitaService {
+    private receitas: Receita[] = [];
+
+    criar(descricao:string, valor:number, data:string, fonte:string): Receita {
+
+        if(!descricao){
+            throw new Error ('Nao aceitamos uma receita sem um fonte');
+        }
+        if(typeof valor !== 'number'){
+            throw new Error ('A receita precisa ter um valor numerico');
+        }
+        const receita = new Receita(descricao, valor, data, fonte);
+        this.receitas.push(receita);
+        return receita;
+    }
+    listarReceitas(): Receita[]{
+        return this.receitas
+    }
+    buscarPorFonte(fonte:string): Receita[]{
+        const filtrarFonte = this.receitas.filter(item=> item.fonteReceita === fonte);
+        return filtrarFonte;
+    }
+    calcularTotal():number{
+        const somaReceitas = this.receitas.reduce((total, receita)=> total + receita.valorTransacao, 0)
+        return somaReceitas;
+    }   
+    deletar(descricao:string):boolean{
+        const index = this.receitas.findIndex((item)=> item.descricaoTransacao === descricao);
+        //console.log(this.receitas[index])
+        if (index !== -1){
+            this.receitas.splice(index, 1);
+            return true;
+        }
+        return false;
+    }
+}-e 
+
+
+=== src/services/DespesaService.ts ===
+import {Despesa} from "../models/Transacao.js";
+export class DespesaService{
+    private despesa: Despesa[] = [];
+
+    criar(descricao:string, valor:number, data:string, categoria:string): Despesa {
+        if(!descricao){
+            throw new Error ('Nao aceitamos despesa sem descricao')
+        }
+        if(typeof valor !== 'number'){
+            throw new Error ('Favor entregar um valor numerico para o campo valor')
+        }
+        const despesa = new Despesa(descricao, valor, data, categoria)
+        this.despesa.push(despesa);
+        return despesa;
+
+    }
+    listarDespesas(): Despesa[] {
+        return this.despesa;
+
+    }
+    buscarPorCategoria(categoria: string): Despesa[]{
+        const filtroDespesa = this.despesa.filter(d => d.categoriaDespesa === categoria)
+        return filtroDespesa;
+    }
+    calcularTotal(): number{
+        const soma = this.despesa.reduce((total, valorTransacao)=> total + valorTransacao.valorTransacao, 0);
+        return soma;
+    }
+    deletar (descricao:string): boolean{
+        const index = this.despesa.findIndex((item)=> item.descricaoTransacao === descricao);
+        if (index !== -1){
+            this.despesa.splice(index, 1);
+            return true
+        }
+        return false
+    }
+}-e 
+
+

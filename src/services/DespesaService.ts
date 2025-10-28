@@ -1,6 +1,6 @@
 import {Despesa} from "../models/Transacao.js";
 export class DespesaService{
-    private despesa: Despesa[] = [];
+    private despesas: Despesa[] = [];
 
     criar(descricao:string, valor:number, data:string, categoria:string): Despesa {
         if(!descricao){
@@ -10,26 +10,26 @@ export class DespesaService{
             throw new Error ('Favor entregar um valor numerico para o campo valor')
         }
         const despesa = new Despesa(descricao, valor, data, categoria)
-        this.despesa.push(despesa);
+        this.despesas.push(despesa);
         return despesa;
 
     }
     listarDespesas(): Despesa[] {
-        return this.despesa;
+        return this.despesas;
 
     }
     buscarPorCategoria(categoria: string): Despesa[]{
-        const filtroDespesa = this.despesa.filter(d => d.categoriaDespesa === categoria)
+        const filtroDespesa = this.despesas.filter(d => d.categoriaDespesa === categoria)
         return filtroDespesa;
     }
     calcularTotal(): number{
-        const soma = this.despesa.reduce((total, valorTransacao)=> total + valorTransacao.valorTransacao, 0);
+        const soma = this.despesas.reduce((total, valorTransacao)=> total + valorTransacao.valorTransacao, 0);
         return soma;
     }
     deletar (descricao:string): boolean{
-        const index = this.despesa.findIndex((item)=> item.descricaoTransacao === descricao);
+        const index = this.despesas.findIndex((item)=> item.descricaoTransacao === descricao);
         if (index !== -1){
-            this.despesa.splice(index, 1);
+            this.despesas.splice(index, 1);
             return true
         }
         return false
