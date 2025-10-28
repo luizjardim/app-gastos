@@ -22,10 +22,16 @@ export class DespesaService{
         const filtroDespesa = this.despesa.filter(d => d.categoriaDespesa === categoria)
         return filtroDespesa;
     }
-    calcularTotal(){
-
+    calcularTotal(): number{
+        const soma = this.despesa.reduce((total, valorTransacao)=> total + valorTransacao.valorTransacao, 0);
+        return soma;
     }
-    deletar (){
-
+    deletar (descricao:string): boolean{
+        const index = this.despesa.findIndex((item)=> item.descricaoTransacao === descricao);
+        if (index !== -1){
+            this.despesa.splice(index, 1);
+            return true
+        }
+        return false
     }
 }

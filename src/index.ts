@@ -16,9 +16,17 @@ console.log(despesaService.listarDespesas().map(d => d.exibir()));
 console.log('\nDespesas de Alimentação:');
 console.log(despesaService.buscarPorCategoria('Alimentação').map(d => d.exibir()));
 
-/*
+
 console.log(`\nTotal de despesas: R$ ${despesaService.calcularTotal().toFixed(2)}`);
 
+// Teste de deleção
+console.log('\n\nDeletando "Uber"...');
+const deletou = despesaService.deletar('Uber');
+console.log(`Deletou: ${deletou}`);
+console.log('Despesas restantes:', despesaService.listarDespesas().length);
+
+
+/*
 // Testa ReceitaService
 const receitaService = new ReceitaService();
 
@@ -30,9 +38,5 @@ console.log(receitaService.listarTodas().map(r => r.exibir()));
 
 console.log(`\nTotal de receitas: R$ ${receitaService.calcularTotal().toFixed(2)}`);
 
-// Teste de deleção
-console.log('\n\nDeletando "Uber"...');
-const deletou = despesaService.deletar('Uber');
-console.log(`Deletou: ${deletou}`);
-console.log('Despesas restantes:', despesaService.listarTodas().length);
+
 */
