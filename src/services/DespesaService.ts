@@ -3,12 +3,6 @@ export class DespesaService{
     private despesas: Despesa[] = [];
 
     criar(descricao:string, valor:number, data:string, categoria:string): Despesa {
-        if(!descricao){
-            throw new Error ('Nao aceitamos despesa sem descricao')
-        }
-        if(typeof valor !== 'number'){
-            throw new Error ('Favor entregar um valor numerico para o campo valor')
-        }
         const despesa = new Despesa(descricao, valor, data, categoria)
         this.despesas.push(despesa);
         return despesa;
