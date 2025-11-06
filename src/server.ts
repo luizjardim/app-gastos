@@ -1,6 +1,6 @@
 import express from 'express';
 import despesasRoutes from './routes/despesas.routes';
-
+import receitasRoutes from './routes/receitas.routes';
 const app = express();
 const PORT = 3000;
 
@@ -28,7 +28,7 @@ app.get('/', (req,res)=>{
 // Depois as rotas
 
 app.use('/despesas', despesasRoutes);
-
+app.use('/receitas', receitasRoutes);
 app.listen(PORT, () => {
     console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
 });

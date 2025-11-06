@@ -3,13 +3,6 @@ export class ReceitaService {
     private receitas: Receita[] = [];
 
     criar(descricao:string, valor:number, data:string, fonte:string): Receita {
-
-        if(!descricao){
-            throw new Error ('Nao aceitamos uma receita sem um fonte');
-        }
-        if(typeof valor !== 'number'){
-            throw new Error ('A receita precisa ter um valor numerico');
-        }
         const receita = new Receita(descricao, valor, data, fonte);
         this.receitas.push(receita);
         return receita;
