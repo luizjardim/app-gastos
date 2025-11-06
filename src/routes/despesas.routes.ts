@@ -8,4 +8,11 @@ router.post('/', (req, res)=> {
     despesasRoutes.criar(req,res)
 });
 
-export default router; despesasRoutes;
+router.get('/', (req, res)=> {
+    despesasRoutes.listar(req,res)
+});
+
+router.delete('/:descricao', (req, res)=> {
+    despesasRoutes.deletar(req,res)
+});
+export default router;

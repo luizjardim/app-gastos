@@ -10,6 +10,7 @@ app.use(express.json());
 app.use((req, res, next) => {
     console.log("📥 Requisição:", req.method, req.url);
     console.log("📦 Body:", req.body);
+    console.log("📦 ID Param:", req.params.descricao);
     next();
 });
 
