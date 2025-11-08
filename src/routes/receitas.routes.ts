@@ -17,5 +17,8 @@ router.get('/calcular', (req, res)=>{
 router.get('/:fonte', (req,res)=>{
     receitasRoutes.buscarPorFonte(req,res);
 });
+router.delete('/:descricao', (req,res)=>{
+    receitasRoutes.delete(req,res);
+});
 
 export default router;

@@ -9,6 +9,7 @@ export class ReceitaController{
     }
     criar(req:Request, res:Response){
         const {descricao, valor, data, fonte} = req.body;
+         console.log('Passou aqui 3')
         if (!descricao || !valor || !data || !fonte){
             return res.status(400).json({
                 erro: "Os campos: descricao, valor, data e fonte sao obrigatorios"
@@ -77,5 +78,23 @@ export class ReceitaController{
         return res.status(200).json({
             message: `Total calculado de receitas: R$ ${totalCaculadoReceitas}`
         })
+    }
+    delete(req:Request, res:Response){
+        const descricao = req.params.descricao
+        if(!descricao){
+            return res.status(400).json({
+                erro: 'Parametro descricao faltante'
+            })
+        }
+        const validaDelete = this.receitaService.deletar(descricao);
+        if(!validaDelete){
+            return res.status(404).json({
+                erro: `Nao foi possivel encontrar uma receita com essa descricao: ${descricao}`
+            })
+        }
+        return res.status(200).json({
+            message: `Receita com descricao: ${descricao} deletada com sucesso`
+        })
+
     }
 }
