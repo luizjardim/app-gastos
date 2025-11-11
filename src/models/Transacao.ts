@@ -4,23 +4,32 @@ class Transacao {
     private data: string;
 
     constructor(descricao:string, valor:number, data:string){
+        console.log('📍 [Transacao.ts] 🏗️  Constructor chamado');
+        console.log('   📥 Params:', { descricao, valor, data });
         this.descricao = descricao;
         this.valor = valor;
         this.data = data;
+        console.log('   ✅ Transacao criada:', this);
     }
 
     get descricaoTransacao(){
+        console.log('📍 [Transacao.ts] 🔍 Getter descricao acessado');
         return this.descricao;
     }
     get valorTransacao(){
+        console.log('📍 [Transacao.ts] 🔍 Getter valor acessado');
         return this.valor;
     }
     get dataTransacao(){
+        console.log('📍 [Transacao.ts] 🔍 Getter data acessado');
         return this.data;
     }
 
     exibir():string{
-        return `${this.data} / ${this.descricao}: R$: ${this.valor.toFixed(2)}`
+        console.log('📍 [Transacao.ts] 📤 Método exibir chamado');
+        const resultado = `${this.data} / ${this.descricao}: R$: ${this.valor.toFixed(2)}`;
+        console.log('   📤 Resultado:', resultado);
+        return resultado;
     }
 
 
@@ -30,16 +39,27 @@ class Despesa extends Transacao{
     private categoria: string;
 
     constructor(descricao:string, valor:number, data:string, categoria:string){
+        console.log('📍 [Despesa.ts] 🏗️  Constructor Despesa chamado');
+        console.log('   📥 Params:', { descricao, valor, data, categoria });
+        console.log('   🔍 Valor original:', valor);
         if (valor > 0 ){
             valor = valor * -1
+            console.log('   ⚠️  Valor convertido para negativo:', valor);
         }
         super(descricao, valor, data);
         this.categoria = categoria; 
+        console.log('   ✅ Despesa criada:', {
+            descricao: this.descricaoTransacao,
+            valor: this.valorTransacao,
+            categoria: this.categoria
+        });
     }
     exibir():string{
+        console.log('📍 [Despesa.ts] 📤 Método exibir (override) chamado');
         return `${this.dataTransacao} / ${this.descricaoTransacao}: R$: ${this.valorTransacao.toFixed(2)} / Na categoria: ${this.categoria}`
     }
     get categoriaDespesa(){
+        console.log('📍 [Despesa.ts] 🔍 Getter categoria acessado');
         return this.categoria;
     }
 
@@ -49,17 +69,29 @@ class Despesa extends Transacao{
 class Receita extends Transacao{
     private fonte: string;
     constructor(descricao:string, valor:number, data:string, fonte:string){
+        console.log('📍 [Receita.ts] 🏗️  Constructor Receita chamado');
+        console.log('   📥 Params:', { descricao, valor, data, fonte });
+        
+        console.log('   🔍 Valor original:', valor);
         if (valor < 0){
             valor = valor *-1
         }
         super(descricao, valor, data);
         this.fonte = fonte;
+        console.log('   ✅ Receita criada:', {
+            descricao: this.descricaoTransacao,
+            valor: this.valorTransacao,
+            fonte: this.fonte
+        });
+        
     }
     exibir():string{
+        console.log('📍 [Receita.ts] 📤 Método exibir (override) chamado');
         return `${this.dataTransacao} / ${this.descricaoTransacao}: R$: ${this.valorTransacao.toFixed(2)} / Fonte: ${this.fonte}`
     }
 
     get fonteReceita():string{
+        console.log('📍 [Receita.ts] 🔍 Getter fonte acessado');
         return this.fonte;
     }
 
@@ -70,6 +102,10 @@ class Investimento extends Transacao{
     private rentabilidade: number;
 
     constructor(descricao:string, valor:number, data:string, tipo:string, rentabilidade: number){
+        console.log('📍 [Investimento.ts] 🏗️  Constructor Investimento chamado');
+        console.log('   📥 Params:', { descricao, valor, data, tipo });
+        
+        console.log('   🔍 Valor original:', valor);
         if(valor < 0){
             valor = valor*-1;
         }
@@ -78,10 +114,17 @@ class Investimento extends Transacao{
         }
         super(descricao, valor, data);
         this.tipo = tipo;
-        this.rentabilidade = rentabilidade
+        this.rentabilidade = rentabilidade;
+        console.log('   ✅ Receita criada:', {
+            descricao: this.descricaoTransacao,
+            valor: this.valorTransacao,
+            fonte: this.tipo
+        });
+        
         
     }
     exibir():string{
+        console.log('📍 [Investimento.ts] 📤 Método exibir (override) chamado');
         return `${this.dataTransacao} / ${this.descricaoTransacao} > R$: ${this.valorTransacao.toFixed(2)} / Tipo investimento: ${this.tipo}`
     }
     calcularRetorno():string{

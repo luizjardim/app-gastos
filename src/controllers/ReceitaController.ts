@@ -5,11 +5,10 @@ export class ReceitaController{
     private receitaService: ReceitaService; 
 
     constructor (){
-        this.receitaService = new ReceitaService();
+        this.receitaService = ReceitaService.getInstance();
     }
     criar(req:Request, res:Response){
         const {descricao, valor, data, fonte} = req.body;
-         console.log('Passou aqui 3')
         if (!descricao || !valor || !data || !fonte){
             return res.status(400).json({
                 erro: "Os campos: descricao, valor, data e fonte sao obrigatorios"

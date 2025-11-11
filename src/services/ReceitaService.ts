@@ -1,10 +1,23 @@
 import { Receita } from "../models/Transacao";
 export class ReceitaService {
+    private static instance : ReceitaService;
     private receitas: Receita[] = [];
+    private constructor(){}
+
+    public static getInstance():ReceitaService{
+        if(!ReceitaService.instance){
+            console.log(`ReceitaService.ts`,ReceitaService.instance)
+            ReceitaService.instance = new ReceitaService;
+        }
+        console.log(`ReceitaService.ts`,ReceitaService.instance)
+        return ReceitaService.instance;
+    }
+  
 
     criar(descricao:string, valor:number, data:string, fonte:string): Receita {
         const receita = new Receita(descricao, valor, data, fonte);
         this.receitas.push(receita);
+        console.log(`ReceitaService.ts`, this.receitas)
         return receita;
     }
     listarReceitas(): Receita[]{
